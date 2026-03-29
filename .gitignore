@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Build outputs
+build/
+bin/
+
+# VS/IDE temp
+*.user
+*.VC.db
+*.opendb
+.vs/
+

@@ -1,0 +1,34 @@
+name: Build Windows EXE
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: mingw-w64-x86_64-gcc
+
+      - name: Compile
+        shell: msys2 {0}
+        run: |
+          g++ -std=c++98 -Wall -Wextra -pedantic -Iinclude \
+            -o guess_word.exe \
+            src/main.cpp src/ConsoleUtil.cpp src/Draw.cpp src/GuessGame.cpp
+
+      - name: Upload EXE Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-executable
+          path: |
+            guess_word.exe
+            words.txt
+

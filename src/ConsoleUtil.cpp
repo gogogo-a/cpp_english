@@ -19,13 +19,22 @@
 
 void EnableUtf8Console()
 {
-    // 先让 C 运行时使用系统当前区域设置。
-    std::setlocale(LC_ALL, "");
-
 #ifdef _WIN32
+    // Windows 下优先使用 UTF-8 区域设置，失败时再回退到系统默认区域设置。
+    if (std::setlocale(LC_ALL, ".UTF-8") == 0)
+    {
+        std::setlocale(LC_ALL, "");
+    }
+
     // Windows 控制台切换到 UTF-8 编码页（65001），避免中文输出乱码。
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
+
+    // 某些终端环境下，显式执行 chcp 可让代码页切换更稳定。
+    std::system("chcp 65001 > nul");
+#else
+    // 非 Windows 平台按系统当前区域设置处理。
+    std::setlocale(LC_ALL, "");
 #endif
 }
 

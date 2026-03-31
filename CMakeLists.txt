@@ -28,4 +28,8 @@ if(MSVC)
     target_compile_options(guess_word PRIVATE /utf-8 /W4)
 else()
     target_compile_options(guess_word PRIVATE -Wall -Wextra -pedantic)
+    # MinGW 下显式指定源码与执行字符集为 UTF-8，避免中文字符串在 Windows 终端乱码。
+    if(MINGW)
+        target_compile_options(guess_word PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8)
+    endif()
 endif()

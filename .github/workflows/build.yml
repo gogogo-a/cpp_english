@@ -20,7 +20,9 @@ jobs:
       - name: Compile
         shell: msys2 {0}
         run: |
-          g++ -std=c++98 -Wall -Wextra -pedantic -Iinclude \
+          g++ -std=c++98 -Wall -Wextra -pedantic \
+            -finput-charset=UTF-8 -fexec-charset=UTF-8 \
+            -Iinclude \
             -o guess_word.exe \
             src/main.cpp src/ConsoleUtil.cpp src/Draw.cpp src/GuessGame.cpp
 

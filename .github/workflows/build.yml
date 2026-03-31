@@ -24,11 +24,19 @@ jobs:
             -o guess_word.exe \
             src/main.cpp src/ConsoleUtil.cpp src/Draw.cpp src/GuessGame.cpp
 
+      - name: Package EXE With Runtime DLLs
+        shell: msys2 {0}
+        run: |
+          mkdir -p dist
+          cp guess_word.exe dist/
+          cp words.txt dist/
+          cp /mingw64/bin/libgcc_s_seh-1.dll dist/
+          cp /mingw64/bin/libstdc++-6.dll dist/
+          cp /mingw64/bin/libwinpthread-1.dll dist/
+          ls -la dist
+
       - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-executable
-          path: |
-            guess_word.exe
-            words.txt
-
+          path: dist/
